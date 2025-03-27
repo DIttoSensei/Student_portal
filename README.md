@@ -26,7 +26,18 @@ Django-based student payment portal with admin management.
    pip install -r requirements.txt
    ```
 
-4. Run development server:
+
+4. Run migrations:
+   ```bash
+   python manage.py migrate
+   ```
+
+5. Create superuser:
+   ```bash
+   python manage.py createsuperuser
+   ```
+
+6. Run development server:
    ```bash
    python manage.py runserver
    ```
