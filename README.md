@@ -26,23 +26,7 @@ Django-based student payment portal with admin management.
    pip install -r requirements.txt
    ```
 
-4. Configure environment:
-   ```bash
-   cp .env.example .env
-   # Edit .env with your settings
-   ```
-
-5. Run migrations:
-   ```bash
-   python manage.py migrate
-   ```
-
-6. Create superuser:
-   ```bash
-   python manage.py createsuperuser
-   ```
-
-7. Run development server:
+4. Run development server:
    ```bash
    python manage.py runserver
    ```

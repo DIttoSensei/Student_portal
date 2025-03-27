@@ -12,11 +12,12 @@
         <h1>Login</h1>
         <p class="description">Enter your account details</p>
         
-        {% if messages %}
+        {% if error %}
             <div class="error-message">
-                {% for message in messages %}
-                    {{ message }}
-                {% endfor %}
+                {{ error }}
+                {% if error == 'Invalid password' %}
+                    <p><a href="#" class="forgot-password">Forgot password?</a></p>
+                {% endif %}
             </div>
         {% endif %}
         
@@ -24,15 +25,14 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" 
+                       value="{{ username }}" required>
             </div>
             
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            
-            <a href="#" class="forgot-password">Forgot Password?</a>
             
             <button type="submit" class="login-button">Login</button>
         </form>

@@ -2,8 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .models import Student, SchoolFee, Accommodation
+from django.contrib.auth.models import User
 
 def login_view(request):
+    error = None
+    username = ''
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -13,8 +17,16 @@ def login_view(request):
             login(request, user)
             return redirect('dashboard')
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
-    return render(request, 'login.html')
+            # Only check for user existence after form submission
+            if not User.objects.filter(username=username).exists():
+                error = 'User not found'
+            else:
+                error = 'Invalid password'
+    
+    return render(request, 'login.html', {
+        'error': error,
+        'username': username
+    })
 
 @login_required
 def dashboard_view(request):

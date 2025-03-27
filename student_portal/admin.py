@@ -3,6 +3,11 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from .models import Student, SchoolFee, Accommodation
 
+# Change admin site header
+admin.site.site_header = "ESPAM Administration"
+admin.site.site_title = "ESPAM Admin Portal"
+admin.site.index_title = "Welcome to ESPAM Administration"
+
 class StudentInline(admin.StackedInline):
     model = Student
     can_delete = False
