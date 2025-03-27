@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="{% static 'images/logo-white.png' %}" alt="ESPAM Logo" class="sidebar-logo">
+                <h2>ESPAM Portal</h2>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-tachometer-alt"></i>
+                        Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-user-graduate"></i>
+                        Profile
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        Payments
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-book"></i>
+                        Courses
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bed"></i>
+                        Accommodation
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        Logout
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Student Dashboard</h1>
+                <div class="welcome-message">
+                    Welcome, {{ student.name }}
+                </div>
+            </header>
+
+            <!-- Student Details Card -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-user-graduate"></i> Student Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="detail-item">
+                        <span class="detail-label">Student ID:</span>
+                        <span class="detail-value">{{ student.id }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Program:</span>
+                        <span class="detail-value">{{ student.program }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Level:</span>
+                        <span class="detail-value">{{ student.level }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value">{{ student.email }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Cards Row -->
+            <div class="financial-cards">
+                <!-- Deposit Card -->
+                <div class="dashboard-card financial-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-wallet"></i> Deposit</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="amount-display">
+                            <span class="amount">₦{{ finance.deposit|floatformat:"0" }}</span>
+                            <span class="amount-label">Current Balance</span>
+                        </div>
+                        <button class="action-btn">Make Deposit</button>
+                    </div>
+                </div>
+
+                <!-- School Fees Card -->
+                <div class="dashboard-card financial-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-book"></i> School Fees</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="amount-display">
+                            <span class="amount">₦{{ finance.school_fees.amount|floatformat:"0" }}</span>
+                            <span class="amount-status {{ finance.school_fees.status }}">
+                                {{ finance.school_fees.status|title }}
+                            </span>
+                        </div>
+                        <div class="payment-details">
+                            <span>Last Payment: {{ finance.school_fees.last_payment }}</span>
+                            <span>Receipt: {{ finance.school_fees.receipt }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accommodation Card -->
+                <div class="dashboard-card financial-card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-bed"></i> Accommodation</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="amount-display">
+                            <span class="amount">₦{{ finance.accommodation.amount|floatformat:"0" }}</span>
+                            <span class="amount-status {{ finance.accommodation.status }}">
+                                {{ finance.accommodation.status|title }}
+                            </span>
+                        </div>
+                        <div class="payment-details">
+                            <span>Room: {{ finance.accommodation.room }}</span>
+                            <span>Due Date: {{ finance.accommodation.due_date }}</span>
+                        </div>
+                        <button class="action-btn">Pay Now</button>
+                    </div>
