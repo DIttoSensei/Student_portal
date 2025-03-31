@@ -6,13 +6,8 @@ Django-based student payment portal with admin management.
 - Student dashboard
 - Payment tracking
 - Admin interface for user management
+ 
 
-## Setup
-
-1. Clone repository:
-   ```bash
-   git clone https://github.com/DIttoSensei/Student_portal.git
-   ```
 
 2. Create virtual environment:
    ```bash

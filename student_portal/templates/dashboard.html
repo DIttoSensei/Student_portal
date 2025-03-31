@@ -10,137 +10,122 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar Navigation -->
         <aside class="sidebar">
             <div class="sidebar-header">
                 <img src="{% static 'images/logo_dash.png' %}" alt="ESPAM Logo" class="sidebar-logo">
                 <h2>ESPAM Portal</h2>
             </div>
-            
             <ul class="nav-menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active">
-                        <i class="fas fa-tachometer-alt"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-user-graduate"></i>
-                        Profile
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-wallet"></i>
-                        Payments
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-book"></i>
-                        Courses
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-bed"></i>
-                        Accommodation
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{% url 'logout' %}" class="nav-link">
-                        <i class="fas fa-sign-out-alt"></i>
-                        Logout
-                    </a>
-                </li>
+                <li class="nav-item"><a href="#" class="nav-link active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-user-graduate"></i> Profile</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-wallet"></i> Payments</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-book"></i> Courses</a></li>
+                <li class="nav-item"><a href="#" class="nav-link"><i class="fas fa-bed"></i> Accommodation</a></li>
+                <li class="nav-item"><a href="{% url 'logout' %}" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </aside>
 
-        <!-- Main Content Area -->
         <main class="main-content">
             <header class="dashboard-header">
                 <h1>Student Dashboard</h1>
-                <div class="welcome-message">
-                    Welcome, {{ student.name }}
-                </div>
+                <div class="welcome-message">Welcome, {{ student.name }}</div>
             </header>
 
-            <!-- Student Details Card -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
             <div class="dashboard-card">
                 <div class="card-header">
                     <h2><i class="fas fa-user-graduate"></i> Student Details</h2>
                 </div>
                 <div class="card-body">
-                    <div class="detail-item">
-                        <span class="detail-label">Student ID:</span>
-                        <span class="detail-value">{{ student.id }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Program:</span>
-                        <span class="detail-value">{{ student.program }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Level:</span>
-                        <span class="detail-value">{{ student.level }}</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="detail-label">Email:</span>
-                        <span class="detail-value">{{ student.email }}</span>
-                    </div>
+                    <div class="detail-item"><span class="detail-label">Student ID:</span> <span class="detail-value">{{ student.id }}</span></div>
+                    <div class="detail-item"><span class="detail-label">Program:</span> <span class="detail-value">{{ student.program }}</span></div>
+                    <div class="detail-item"><span class="detail-label">Level:</span> <span class="detail-value">{{ student.level }}</span></div>
+                    <div class="detail-item"><span class="detail-label">Email:</span> <span class="detail-value">{{ student.email }}</span></div>
                 </div>
             </div>
 
-            <!-- Financial Cards Row -->
             <div class="financial-cards">
-                <!-- Deposit Card -->
                 <div class="dashboard-card financial-card">
                     <div class="card-header">
                         <h2><i class="fas fa-wallet"></i> Deposit</h2>
                     </div>
                     <div class="card-body">
                         <div class="amount-display">
-                            <span class="amount">₦{{ finance.deposit|floatformat:"0" }}</span>
+                            <span class="amount">₦{{ finance.deposit|floatformat:"2" }}</span>
                             <span class="amount-label">Current Balance</span>
                         </div>
-                        <button class="action-btn">Make Deposit</button>
+                        <form method="post" action="{% url 'make_deposit' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="number" name="amount" min="100" step="100" placeholder="Amount" required class="form-control">
+                            </div>
+                            <button type="submit" class="action-btn">Make Deposit</button>
+                        </form>
                     </div>
                 </div>
 
-                <!-- School Fees Card -->
                 <div class="dashboard-card financial-card">
                     <div class="card-header">
                         <h2><i class="fas fa-book"></i> School Fees</h2>
                     </div>
                     <div class="card-body">
                         <div class="amount-display">
-                            <span class="amount">₦{{ finance.school_fees.amount|floatformat:"0" }}</span>
-                            <span class="amount-status {{ finance.school_fees.status }}">
-                                {{ finance.school_fees.status|title }}
-                            </span>
+                            <span class="amount">₦{{ finance.school_fees.balance|floatformat:"2" }}</span> <!-- Changed to balance -->
+                            <span class="amount-status {{ finance.school_fees.status }}">{{ finance.school_fees.status|title }}</span>
                         </div>
                         <div class="payment-details">
-                            <span>Last Payment: {{ finance.school_fees.last_payment }}</span>
-                            <span>Receipt: {{ finance.school_fees.receipt }}</span>
+                            <div>Total: ₦{{ finance.school_fees.amount|floatformat:"2" }}</div>
+                            <div>Paid: ₦{{ finance.school_fees.amount_paid|floatformat:"2" }}</div>
+                            <div>Balance: ₦{{ finance.school_fees.balance|floatformat:"2" }}</div>
+                            {% if finance.school_fees.last_payment != 'N/A' %}
+                                <div>Last Paid: {{ finance.school_fees.last_payment }}</div>
+                            {% endif %}
                         </div>
+                        {% if finance.school_fees.balance > 0 %}
+                            <form method="post" action="{% url 'pay_school_fee' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="number" name="amount" min="100" max="{{ finance.school_fees.balance }}" step="100" placeholder="Amount" required class="form-control">
+                                </div>
+                                <button type="submit" class="action-btn">Pay School Fees</button>
+                            </form>
+                        {% endif %}
                     </div>
                 </div>
 
-                <!-- Accommodation Card -->
                 <div class="dashboard-card financial-card">
                     <div class="card-header">
                         <h2><i class="fas fa-bed"></i> Accommodation</h2>
                     </div>
                     <div class="card-body">
                         <div class="amount-display">
-                            <span class="amount">₦{{ finance.accommodation.amount|floatformat:"0" }}</span>
-                            <span class="amount-status {{ finance.accommodation.status }}">
-                                {{ finance.accommodation.status|title }}
-                            </span>
+                            <span class="amount">₦{{ finance.accommodation.balance|floatformat:"2" }}</span> <!-- Changed to balance -->
+                            <span class="amount-status {{ finance.accommodation.status }}">{{ finance.accommodation.status|title }}</span>
                         </div>
                         <div class="payment-details">
-                            <span>Room: {{ finance.accommodation.room }}</span>
-                            <span>Due Date: {{ finance.accommodation.due_date }}</span>
+                            <div>Room: {{ finance.accommodation.room }}</div>
+                            <div>Due: {{ finance.accommodation.due_date }}</div>
+                            <div>Paid: ₦{{ finance.accommodation.amount_paid|floatformat:"2" }}</div>
+                            <div>Balance: ₦{{ finance.accommodation.balance|floatformat:"2" }}</div>
                         </div>
-                        <button class="action-btn">Pay Now</button>
+                        {% if finance.accommodation.balance > 0 %}
+                            <form method="post" action="{% url 'pay_accommodation' %}">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <input type="number" name="amount" min="100" max="{{ finance.accommodation.balance }}" step="100" placeholder="Amount" required class="form-control">
+                                </div>
+                                <button type="submit" class="action-btn">Pay Accommodation</button>
+                            </form>
+                        {% endif %}
                     </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

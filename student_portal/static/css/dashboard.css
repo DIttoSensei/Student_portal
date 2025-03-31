@@ -221,3 +221,75 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+
+/* Payment form styling */
+.payment-form {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.payment-complete {
+    color: #28a745;
+    text-align: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.action-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #8a5ed0;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: #5a3d8a;
+}
+
+.action-btn i {
+    margin-right: 8px;
+}
+
+.amount-status.paid {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
+
+
+
+
+.amount-status.pending {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 2px 8px;
+    border-radius: 4px;
+}
